@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Site Induction Document Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+ :root {
+  --primary: #1a3a5c;
+  --primary-light: #2a5a8c;
+  --accent: #e8a020;
+  --accent-light: #f5c05a;
+  --bg: #f4f6f9;
+  --card: #ffffff;
+  --text: #1a2332;
+  --text-muted: #6b7a8d;
+  --border: #dde3ed;
+  --success: #1e8a4a;
+  --success-bg: #e6f5ed;
+  --danger: #c0392b;
+  --danger-bg: #fdeaea;
+  --warning: #d68910;
+  --warning-bg: #fef9e7;
+  --info: #1565c0;
+  --info-bg: #e3f0ff;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(26,58,92,0.08);
+  --shadow-lg: 0 8px 32px rgba(26,58,92,0.14);
+ }
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+ /* HEADER */
+ .site-header {
+  background: var(--primary);
+  color: white;
+  padding: 0;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+ }
+ .header-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+ }
+ .logo-area { display: flex; align-items: center; gap: 14px; }
+ .logo-badge {
+  background: var(--accent); color: var(--primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 18px;
+  padding: 6px 14px; border-radius: 6px;
+  letter-spacing: 1px;
+ }
+ .site-title { font-size: 16px; font-weight: 500; opacity: 0.92; }
+ .site-subtitle { font-size: 12px; opacity: 0.65; margin-top: 1px; }
+ .header-right { display: flex; align-items: center; gap: 10px; }
+ .user-pill {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 13px; color: white; display: flex; align-items: center; gap: 6px;
+ }
+ .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+ .btn-logout {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.25);
+  color: white; padding: 6px 14px; border-radius: 6px; cursor: pointer;
+  font-size: 13px; transition: background 0.2s;
+ }
+ .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+ /* SCREENS */
+ .screen { display: none; }
+ .screen.active { display: block; }
+
+ /* AUTH SCREEN */
+ .auth-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1a3a5c 0%, #2a5a8c 50%, #1a3a5c 100%);
+  padding: 24px;
+ }
+ .auth-card {
+  background: white; border-radius: 16px; padding: 40px 36px;
+  width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+ }
+ .auth-logo {
+  text-align: center; margin-bottom: 28px;
+ }
+ .auth-badge {
+  display: inline-block;
+  background: var(--primary); color: var(--accent);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 28px;
+  padding: 10px 22px; border-radius: 10px;
+  letter-spacing: 2px; margin-bottom: 10px;
+ }
+ .auth-tagline { color: var(--text-muted); font-size: 14px; }
+ .tab-bar { display: flex; background: var(--bg); border-radius: 8px; padding: 4px; margin-bottom: 24px; }
+ .tab-btn {
+  flex: 1; padding: 9px; border: none; background: transparent;
+  border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;
+  color: var(--text-muted); transition: all 0.2s; font-family: inherit;
+ }
+ .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+ .form-group { margin-bottom: 16px; }
+ label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+ input[type=text], input[type=password], input[type=date], input[type=email], select, textarea {
+  width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 14px; font-family: inherit;
+  background: white; color: var(--text); transition: border 0.2s; outline: none;
+ }
+ input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+ .btn-primary {
+  width: 100%; padding: 12px; background: var(--primary); color: white;
+  border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s; font-family: inherit;
+ }
+ .btn-primary:hover { background: var(--primary-light); }
+ .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+ .auth-note { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+ .alert {
+  padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 14px;
+  display: none;
+ }
+ .alert.error { background: var(--danger-bg); color: var(--danger); display: block; }
+ .alert.success { background: var(--success-bg); color: var(--success); display: block; }
+ .alert.info { background: var(--info-bg); color: var(--info); display: block; }
+
+ /* MAIN LAYOUT */
+ .main-layout { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+ .page-heading { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+ .page-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+ /* CARDS */
+ .card {
+  background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
+  box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden;
+ }
+ .card-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fafbfd;
+ }
+ .card-title { font-size: 15px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+ .card-body { padding: 20px; }
+
+ /* DOCUMENT UPLOAD ITEMS */
+ .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+ @media(max-width:700px) { .doc-grid { grid-template-columns: 1fr; } }
+ .doc-item {
+  border: 1.5px dashed var(--border); border-radius: 10px;
+  padding: 16px; position: relative; transition: border-color 0.2s;
+ }
+ .doc-item.uploaded { border: 1.5px solid var(--success); background: var(--success-bg); }
+ .doc-item.expired { border: 1.5px solid var(--danger); background: var(--danger-bg); }
+ .doc-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+ .doc-badge {
+  display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px;
+  font-weight: 600; margin-bottom: 8px;
+ }
+ .doc-badge.pending { background: #eee; color: var(--text-muted); }
+ .doc-badge.ok { background: var(--success-bg); color: var(--success); }
+ .doc-badge.exp { background: var(--danger-bg); color: var(--danger); }
+ .doc-badge.mandatory { background: #fff3cd; color: #856404; }
+ .doc-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+ .btn-sm {
+  padding: 5px 11px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; font-family: inherit; transition: opacity 0.2s;
+ }
+ .btn-sm:hover { opacity: 0.85; }
+ .btn-upload { background: var(--primary); color: white; }
+ .btn-view { background: var(--info-bg); color: var(--info); }
+ .btn-delete { background: var(--danger-bg); color: var(--danger); }
+ .btn-replace { background: var(--warning-bg); color: var(--warning); }
+ .expiry-row { margin-top: 8px; display: flex; gap: 6px; align-items: center; }
+ .expiry-row input[type=date] { flex: 1; padding: 5px 10px; font-size: 12px; }
+ .file-name { font-size: 11px; color: var(--text-muted); margin-top: 4px; word-break: break-all; }
+
+ /* LABOR TABLE */
+ .labor-table-wrap { overflow-x: auto; }
+ table { width: 100%; border-collapse: collapse; font-size: 13px; }
+ th { background: #f0f3f8; color: var(--primary); font-weight: 600; padding: 10px 12px; text-align: left; border-bottom: 2px solid var(--border); white-space: nowrap; }
+ td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+ tr:last-child td { border-bottom: none; }
+ tr:hover td { background: #f8faff; }
+ .labor-doc-status { display: flex; gap: 4px; flex-wrap: wrap; }
+ .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+ .status-dot.ok { background: var(--success); }
+ .status-dot.miss { background: #ddd; }
+
+ /* LABOR DOC MODAL */
+ .modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+ }
+ .modal-overlay.open { display: flex; }
+ .modal-box {
+  background: white; border-radius: 14px; width: 100%; max-width: 600px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+ }
+ .modal-header {
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fafbfd; border-radius: 14px 14px 0 0;
+  position: sticky; top: 0; z-index: 1;
+ }
+ .modal-title { font-size: 16px; font-weight: 600; color: var(--primary); }
+ .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-muted); line-height: 1; }
+ .modal-body { padding: 22px; }
+
+ /* ADMIN PANEL */
+ .supplier-card {
+  background: white; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 20px; margin-bottom: 12px; display: flex; align-items: center;
+  justify-content: space-between; gap: 12px; cursor: pointer;
+  transition: box-shadow 0.2s; flex-wrap: wrap;
+ }
+ .supplier-card:hover { box-shadow: var(--shadow-lg); }
+ .supplier-name { font-weight: 600; font-size: 15px; color: var(--primary); }
+ .supplier-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+ .status-badge {
+  padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;
+ }
+ .status-badge.complete { background: var(--success-bg); color: var(--success); }
+ .status-badge.incomplete { background: var(--warning-bg); color: var(--warning); }
+
+ /* COMMENTS */
+ .comment-bubble {
+  background: var(--info-bg); border-left: 3px solid var(--info);
+  border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 10px;
+ }
+ .comment-text { font-size: 14px; color: var(--text); }
+ .comment-meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+ .comment-status { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; margin-left: 6px; }
+ .comment-status.approved { background: var(--success-bg); color: var(--success); }
+ .comment-status.revision { background: var(--danger-bg); color: var(--danger); }
+ .comment-status.pending { background: #eee; color: var(--text-muted); }
+
+ /* STATS */
+ .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 22px; }
+ .stat-box { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+ .stat-num { font-size: 26px; font-weight: 700; color: var(--primary); font-family: 'Space Grotesk', sans-serif; }
+ .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+ /* ADD LABOR FORM */
+ .add-labor-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 16px; }
+ .add-labor-form .form-group { margin: 0; flex: 1; min-width: 160px; }
+ .btn-add { padding: 10px 18px; background: var(--accent); color: var(--primary); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 14px; white-space: nowrap; }
+ .btn-add:hover { background: var(--accent-light); }
+
+ /* PROGRESS BAR */
+ .progress-bar-wrap { background: var(--bg); border-radius: 4px; height: 6px; overflow: hidden; margin-top: 6px; }
+ .progress-bar-fill { height: 100%; background: var(--success); border-radius: 4px; transition: width 0.4s; }
+
+ /* SPINNER */
+ .spinner { border: 3px solid var(--border); border-top: 3px solid var(--primary); border-radius: 50%; width: 22px; height: 22px; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle; }
+ @keyframes spin { to { transform: rotate(360deg); } }
+
+ /* LOADING OVERLAY */
+ .loading-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(255,255,255,0.8); z-index: 9999;
+  align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+ }
+ .loading-overlay.show { display: flex; }
+ .loading-text { font-size: 14px; color: var(--primary); font-weight: 500; }
+
+ /* SECTION TITLE */
+ .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+ .section-icon { width: 28px; height: 28px; border-radius: 7px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+ .required-star { color: var(--danger); margin-left: 2px; }
+
+ /* FILE HIDDEN */
+ input[type=file] { display: none; }
+
+ /* TOOLTIP */
+ .tooltip { position: relative; display: inline-block; }
+ .tooltip .tooltip-text {
+  visibility: hidden; background: #1a2332; color: white; text-align: center;
+  border-radius: 6px; padding: 5px 10px; position: absolute; z-index: 1;
+  bottom: 125%; left: 50%; transform: translateX(-50%);
+  white-space: nowrap; font-size: 11px; pointer-events: none;
+ }
+ .tooltip:hover .tooltip-text { visibility: visible; }
+
+ .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+ .missing-list { font-size: 12px; color: var(--danger); margin-top: 4px; }
+ .drive-link-btn { background: #e8f0fe; color: #1a73e8; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+
+ .labor-doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+ @media(max-width:480px){ .labor-doc-grid { grid-template-columns: 1fr; } }
+ .labor-doc-item { border: 1.5px dashed var(--border); border-radius: 8px; padding: 12px; }
+ .labor-doc-item.uploaded { border: 1.5px solid var(--success); background: var(--success-bg); }
+ .labor-doc-label { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+
+ .back-btn { background: none; border: 1.5px solid var(--border); border-radius: 7px; padding: 7px 14px; cursor: pointer; font-size: 13px; color: var(--primary); font-family: inherit; font-weight: 500; margin-bottom: 16px; display: inline-flex; align-items: center; gap: 5px; }
+ .back-btn:hover { background: var(--bg); }
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+ <div class="spinner"></div>
+ <div class="loading-text" id="loadingText">Processing...</div>
+</div>
+
+<!-- ===== AUTH SCREEN ===== -->
+<div class="screen active" id="authScreen">
+<div class="auth-wrap">
+ <div class="auth-card">
+  <div class="auth-logo">
+   <div class="auth-badge"></div>
+   <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#1a3a5c;margin-top:8px;">Site Induction Document Portal</div>
+   <div class="auth-tagline">Upload & manage your induction documents securely</div>
+  </div>
+
+  <div class="tab-bar">
+   <button class="tab-btn active" onclick="switchAuthTab('login')">Supplier Login</button>
+   <button class="tab-btn" onclick="switchAuthTab('register')">New Registration</button>
+   <button class="tab-btn" onclick="switchAuthTab('admin')">Admin</button>
+  </div>
+
+  <!-- LOGIN TAB -->
+  <div id="tabLogin">
+   <div class="alert" id="loginAlert"></div>
+   <div class="form-group">
+    <label>Company Name</label>
+    <input type="text" id="loginCompany" placeholder="Enter your registered company name">
+   </div>
+   <div class="form-group">
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="Enter your password">
+   </div>
+   <button class="btn-primary" onclick="doLogin()">Login to Portal</button>
+   <div class="auth-note">Contact the site admin if you forgot your password.</div>
+  </div>
+
+  <!-- REGISTER TAB -->
+  <div id="tabRegister" style="display:none;">
+   <div class="alert" id="registerAlert"></div>
+   <div class="form-group">
+    <label>Company Name <span class="required-star">*</span></label>
+    <input type="text" id="regCompany" placeholder="Enter your company name exactly">
+   </div>
+   <div class="form-group">
+    <label>Choose Password <span class="required-star">*</span></label>
+    <input type="password" id="regPassword" placeholder="Choose a secure password">
+   </div>
+   <div class="form-group">
+    <label>Confirm Password <span class="required-star">*</span></label>
+    <input type="password" id="regConfirm" placeholder="Confirm your password">
+   </div>
+   <button class="btn-primary" onclick="doRegister()">Create Account</button>
+   <div class="auth-note">After registration, login with your company name and password.</div>
+  </div>
+
+  <!-- ADMIN TAB -->
+  <div id="tabAdmin" style="display:none;">
+   <div class="alert" id="adminAlert"></div>
+   <div class="form-group">
+    <label>Admin Password</label>
+    <input type="password" id="adminPassword" placeholder="Enter admin password">
+   </div>
+   <button class="btn-primary" onclick="doAdminLogin()">Admin Login</button>
+  </div>
+ </div>
+</div>
+</div>
+
+<!-- ===== SUPPLIER PORTAL SCREEN ===== -->
+<div class="screen" id="supplierScreen">
+ <div class="site-header">
+  <div class="header-inner">
+   <div class="logo-area">
+    <div class="logo-badge"></div>
+    <div>
+     <div class="site-title">Site Induction Document Portal</div>
+     <div class="site-subtitle">Supplier Document Submission</div>
+    </div>
+   </div>
+   <div class="header-right">
+    <div class="user-pill"><div class="dot"></div><span id="headerCompanyName">Company</span></div>
+    <button class="btn-logout" onclick="doLogout()">Logout</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="main-layout">
+  <!-- Comments from Admin -->
+  <div id="supplierCommentsSection" style="display:none;" class="card">
+   <div class="card-header"><div class="card-title">📋 Comments from Admin</div></div>
+   <div class="card-body" id="supplierCommentsList"></div>
+  </div>
+
+  <!-- Progress -->
+  <div class="card">
+   <div class="card-header"><div class="card-title">📊 Submission Progress</div></div>
+   <div class="card-body">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+     <span style="font-size:14px;color:var(--text-muted);">Company documents uploaded</span>
+     <span style="font-size:14px;font-weight:600;color:var(--primary);" id="progressText">0 / 6</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+   </div>
+  </div>
+
+  <!-- COMPANY DOCUMENTS -->
+  <div class="card">
+   <div class="card-header">
+    <div class="card-title">🏢 Company Documents</div>
+    <span style="font-size:12px;color:var(--text-muted);">All mandatory documents must be submitted</span>
+   </div>
+   <div class="card-body">
+    <div class="doc-grid" id="companyDocsGrid"></div>
+   </div>
+  </div>
+
+  <!-- LABOR MANAGEMENT -->
+  <div class="card">
+   <div class="card-header">
+    <div class="card-title">👷 Labor / Employee Documents</div>
+    <span style="font-size:12px;color:var(--text-muted);">Add each worker and upload their documents</span>
+   </div>
+   <div class="card-body">
+    <div class="add-labor-form">
+     <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="newLaborName" placeholder="Employee full name">
+     </div>
+     <div class="form-group">
+      <label>Employee ID / Number</label>
+      <input type="text" id="newLaborEmpNum" placeholder="Employee ID number">
+     </div>
+     <button class="btn-add" onclick="addLabor()">+ Add Employee</button>
+    </div>
+    <div id="laborTableWrap">
+     <div style="text-align:center;padding:30px;color:var(--text-muted);font-size:14px;">No employees added yet. Add your first employee above.</div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- ===== ADMIN SCREEN ===== -->
+<div class="screen" id="adminScreen">
+ <div class="site-header">
+  <div class="header-inner">
+   <div class="logo-area">
+    <div class="logo-badge"></div>
+    <div>
+     <div class="site-title">Site Induction Document Portal</div>
+     <div class="site-subtitle">Admin Dashboard</div>
+    </div>
+   </div>
+   <div class="header-right">
+    <div class="user-pill"><div class="dot" style="background:#4ade80"></div><span>Admin</span></div>
+    <button class="btn-logout" onclick="doLogout()">Logout</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="main-layout" id="adminListView">
+  <div class="page-heading">All Suppliers</div>
+  <div class="page-sub">View and manage all registered supplier submissions</div>
+  <div class="stats-row" id="adminStatsRow"></div>
+  <div id="adminRefreshBtn" style="margin-bottom:16px;">
+   <button class="btn-sm btn-upload" onclick="loadAdminDashboard()" style="padding:8px 18px;font-size:13px;">🔄 Refresh</button>
+  </div>
+  <div id="supplierListWrap"></div>
+ </div>
+
+ <div class="main-layout" id="adminDetailView" style="display:none;">
+  <button class="back-btn" onclick="showAdminList()">← Back to All Suppliers</button>
+  <div id="adminDetailContent"></div>
+ </div>
+</div>
+
+<!-- LABOR DOCS MODAL -->
+<div class="modal-overlay" id="laborModal">
+ <div class="modal-box">
+  <div class="modal-header">
+   <div class="modal-title" id="laborModalTitle">Employee Documents</div>
+   <button class="modal-close" onclick="closeLaborModal()">×</button>
+  </div>
+  <div class="modal-body" id="laborModalBody"></div>
+ </div>
+</div>
+
+<!-- HIDDEN FILE INPUT -->
+<input type="file" id="hiddenFileInput" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
+
+<script>
+// ============================================================
+// CONFIG — REPLACE WITH YOUR DEPLOYED WEB APP URL
+// ============================================================
+const API_URL = 'https://script.google.com/macros/s/AKfycbz_xYuxs91WGU9TG6LSPXfMl3rUrkeUjIda0iJs-XvJcS6wiRgeozcl8p-0z71_tMmV/exec';
+
+// ============================================================
+// STATE
+// ============================================================
+let currentUser = null; // { companyId, companyName, driveFolderID, role }
+let supplierData = null; // { documents, labors, comments }
+let currentFileCallback = null;
+let currentLaborId = null;
+
+// Company document definitions
+const COMPANY_DOCS = [
+ { key: 'trade_license', label: 'Trade License', mandatory: true, hasExpiry: true, accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'undertaking_letter', label: 'Undertaking Letter', mandatory: true, hasExpiry: false, accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
+ { key: 'contract_agreement', label: 'Contract Agreement / LPO (Secondary subcon)', mandatory: false, hasExpiry: false, accept: '.pdf,.doc,.docx' },
+ { key: 'signing_authority_id', label: "Signing Authority's Emirates ID", mandatory: true, hasExpiry: true, accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'health_insurance', label: 'Health Insurance Policy (with employee list)', mandatory: true, hasExpiry: true, accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'workmen_compensation', label: 'Workmen Compensation Policy (with employee list)', mandatory: true, hasExpiry: true, accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'attendance_excel', label: 'Attendance & HSE Induction Excel (Employee Details)', mandatory: true, hasExpiry: false, accept: '.xls,.xlsx' },
+];
+
+// Labor document definitions
+const LABOR_DOCS = [
+ { key: 'passport_copy', label: 'Colored Passport Copy', accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'emirates_id', label: 'Colored Emirates ID', accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'work_permit', label: 'Valid Work Permit (MOHRE)', accept: '.pdf,.jpg,.jpeg,.png' },
+ { key: 'passport_photo', label: 'Passport Size Photo (JPG, white bg)', accept: '.jpg,.jpeg' },
+ { key: 'occ_health_cert', label: 'Occupational Health Certificate', accept: '.pdf,.jpg,.jpeg,.png' },
+];
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function showLoading(msg) {
+ document.getElementById('loadingText').textContent = msg || 'Processing...';
+ document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading() {
+ document.getElementById('loadingOverlay').classList.remove('show');
+}
+
+async function apiCall(payload) {
+ const res = await fetch(API_URL, {
+  method: 'POST',
+  body: JSON.stringify(payload),
+  headers: { 'Content-Type': 'text/plain' }
+ });
+ return await res.json();
+}
+
+function showAlert(id, msg, type) {
+ const el = document.getElementById(id);
+ el.textContent = msg;
+ el.className = 'alert ' + type;
+}
+
+function fileToBase64(file) {
+ return new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => resolve(reader.result.split(',')[1]);
+  reader.onerror = reject;
+  reader.readAsDataURL(file);
+ });
+}
+
+function isExpired(dateStr) {
+ if (!dateStr) return false;
+ return new Date(dateStr) < new Date();
+}
+
+function formatDate(dateStr) {
+ if (!dateStr) return '—';
+ return new Date(dateStr).toLocaleDateString('en-AE', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function showScreen(id) {
+ document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+function switchAuthTab(tab) {
+ document.querySelectorAll('.tab-btn').forEach((b, i) => {
+  b.classList.toggle('active', ['login','register','admin'][i] === tab);
+ });
+ document.getElementById('tabLogin').style.display = tab === 'login' ? '' : 'none';
+ document.getElementById('tabRegister').style.display = tab === 'register' ? '' : 'none';
+ document.getElementById('tabAdmin').style.display = tab === 'admin' ? '' : 'none';
+}
+
+async function doLogin() {
+ const companyName = document.getElementById('loginCompany').value.trim();
+ const password = document.getElementById('loginPassword').value;
+ if (!companyName || !password) return showAlert('loginAlert', 'Please enter company name and password.', 'error');
+ showLoading('Logging in...');
+ try {
+  const res = await apiCall({ action: 'login', companyName, password });
+  if (res.success) {
+   currentUser = { companyId: res.companyId, companyName: res.companyName, driveFolderID: res.driveFolderID, role: 'supplier' };
+   await loadSupplierPortal();
+   showScreen('supplierScreen');
+  } else {
+   showAlert('loginAlert', res.error, 'error');
+  }
+ } catch(e) { showAlert('loginAlert', 'Connection error. Check API URL configuration.', 'error'); }
+ hideLoading();
+}
+
+async function doRegister() {
+ const companyName = document.getElementById('regCompany').value.trim();
+ const password = document.getElementById('regPassword').value;
+ const confirm = document.getElementById('regConfirm').value;
+ if (!companyName || !password) return showAlert('registerAlert', 'All fields are required.', 'error');
+ if (password !== confirm) return showAlert('registerAlert', 'Passwords do not match.', 'error');
+ if (password.length < 6) return showAlert('registerAlert', 'Password must be at least 6 characters.', 'error');
+ showLoading('Creating account...');
+ try {
+  const res = await apiCall({ action: 'register', companyName, password });
+  if (res.success) {
+   showAlert('registerAlert', '✅ Account created! Please login now.', 'success');
+   setTimeout(() => switchAuthTab('login'), 2000);
+  } else {
+   showAlert('registerAlert', res.error, 'error');
+  }
+ } catch(e) { showAlert('registerAlert', 'Connection error.', 'error'); }
+ hideLoading();
+}
+
+async function doAdminLogin() {
+ const password = document.getElementById('adminPassword').value;
+ showLoading('Authenticating...');
+ try {
+  const res = await apiCall({ action: 'adminLogin', password });
+  if (res.success) {
+   currentUser = { role: 'admin' };
+   await loadAdminDashboard();
+   showScreen('adminScreen');
+  } else {
+   showAlert('adminAlert', res.error, 'error');
+  }
+ } catch(e) { showAlert('adminAlert', 'Connection error.', 'error'); }
+ hideLoading();
+}
+
+function doLogout() {
+ currentUser = null;
+ supplierData = null;
+ document.getElementById('loginCompany').value = '';
+ document.getElementById('loginPassword').value = '';
+ document.getElementById('adminPassword').value = '';
+ showScreen('authScreen');
+ switchAuthTab('login');
+}
+
+// ============================================================
+// SUPPLIER PORTAL
+// ============================================================
+async function loadSupplierPortal() {
+ document.getElementById('headerCompanyName').textContent = currentUser.companyName;
+ showLoading('Loading your data...');
+ try {
+  const res = await apiCall({ action: 'getSupplierData', companyId: currentUser.companyId });
+  if (res.success) {
+   supplierData = res;
+   renderCompanyDocs();
+   renderLaborTable();
+   renderSupplierComments();
+   updateProgress();
+  }
+ } catch(e) { alert('Error loading data. Please refresh.'); }
+ hideLoading();
+}
+
+function updateProgress() {
+ const mandatory = COMPANY_DOCS.filter(d => d.mandatory);
+ const uploaded = mandatory.filter(d => supplierData.documents[d.key]).length;
+ const pct = Math.round((uploaded / mandatory.length) * 100);
+ document.getElementById('progressText').textContent = uploaded + ' / ' + mandatory.length;
+ document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function renderSupplierComments() {
+ const comments = supplierData.comments || [];
+ const section = document.getElementById('supplierCommentsSection');
+ const list = document.getElementById('supplierCommentsList');
+ if (comments.length === 0) { section.style.display = 'none'; return; }
+ section.style.display = '';
+ list.innerHTML = comments.map(c => `
+  <div class="comment-bubble">
+   <div class="comment-text">${c.comment}</div>
+   <div class="comment-meta">Admin · ${formatDate(c.date)}
+    <span class="comment-status ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span>
+   </div>
+  </div>
+ `).join('');
+}
+
+function renderCompanyDocs() {
+ const grid = document.getElementById('companyDocsGrid');
+ grid.innerHTML = COMPANY_DOCS.map(doc => {
+  const uploaded = supplierData.documents[doc.key];
+  const expired = uploaded && doc.hasExpiry && isExpired(uploaded.expiryDate);
+  const status = uploaded ? (expired ? 'expired' : 'uploaded') : '';
+  return `
+   <div class="doc-item ${status}" id="docItem_${doc.key}">
+    <div class="doc-label">${doc.label}${doc.mandatory ? '<span class="required-star">*</span>' : ''}</div>
+    ${doc.mandatory ? '<span class="doc-badge mandatory">Mandatory</span>' : ''}
+    ${uploaded ? `
+     <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+      <span class="doc-badge ${expired ? 'exp' : 'ok'}">${expired ? '⚠ EXPIRED' : '✓ Uploaded'}</span>
+     </div>
+     <div class="file-name">📎 ${uploaded.fileName}</div>
+     ${doc.hasExpiry ? `<div class="file-name">Expiry: ${formatDate(uploaded.expiryDate)}</div>` : ''}
+     <div class="doc-actions">
+      <a href="${uploaded.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+      <button class="btn-sm btn-replace" onclick="triggerUpload('${doc.key}', '${doc.accept}', '${doc.hasExpiry}')">↑ Replace</button>
+      <button class="btn-sm btn-delete" onclick="deleteCompanyDoc('${doc.key}')">🗑 Remove</button>
+     </div>
+     ${doc.hasExpiry ? `
+     <div class="expiry-row">
+      <input type="date" id="expiry_${doc.key}" value="${uploaded.expiryDate || ''}" style="flex:1;">
+      <button class="btn-sm btn-upload" onclick="saveExpiry('${doc.key}')">Save Expiry</button>
+     </div>` : ''}
+    ` : `
+     <div class="doc-actions">
+      <button class="btn-sm btn-upload" onclick="triggerUpload('${doc.key}', '${doc.accept}', '${doc.hasExpiry}')">⬆ Upload</button>
+     </div>
+     ${doc.hasExpiry ? `
+     <div class="expiry-row">
+      <input type="date" id="expiry_${doc.key}" placeholder="Set expiry date">
+     </div>` : ''}
+    `}
+   </div>
+  `;
+ }).join('');
+}
+
+function triggerUpload(docKey, accept, hasExpiry) {
+ const input = document.getElementById('hiddenFileInput');
+ input.accept = accept;
+ input.value = '';
+ input.onchange = () => handleCompanyDocUpload(docKey, hasExpiry === 'true' || hasExpiry === true);
+ input.click();
+}
+
+async function handleCompanyDocUpload(docKey, hasExpiry) {
+ const input = document.getElementById('hiddenFileInput');
+ const file = input.files[0];
+ if (!file) return;
+
+ let expiryDate = '';
+ if (hasExpiry) {
+  const expiryInput = document.getElementById('expiry_' + docKey);
+  expiryDate = expiryInput ? expiryInput.value : '';
+ }
+
+ showLoading('Uploading ' + file.name + '...');
+ try {
+  const fileData = await fileToBase64(file);
+  const res = await apiCall({
+   action: 'uploadDocument',
+   companyId: currentUser.companyId,
+   driveFolderID: currentUser.driveFolderID,
+   docType: docKey,
+   fileName: file.name,
+   fileData,
+   mimeType: file.type || 'application/octet-stream',
+   expiryDate
+  });
+  if (res.success) {
+   await loadSupplierPortal();
+  } else {
+   alert('Upload failed: ' + res.error);
+  }
+ } catch(e) { alert('Upload error: ' + e.message); }
+ hideLoading();
+}
+
+async function deleteCompanyDoc(docKey) {
+ if (!confirm('Remove this document? You can re-upload it later.')) return;
+ showLoading('Removing document...');
+ try {
+  await apiCall({ action: 'deleteDocument', companyId: currentUser.companyId, docType: docKey });
+  await loadSupplierPortal();
+ } catch(e) { alert('Error: ' + e.message); }
+ hideLoading();
+}
+
+async function saveExpiry(docKey) {
+ const val = document.getElementById('expiry_' + docKey).value;
+ if (!val) return alert('Please select an expiry date.');
+ showLoading('Saving...');
+ await apiCall({ action: 'updateDocumentExpiry', companyId: currentUser.companyId, docType: docKey, expiryDate: val });
+ await loadSupplierPortal();
+ hideLoading();
+}
+
+// ============================================================
+// LABOR
+// ============================================================
+async function addLabor() {
+ const name = document.getElementById('newLaborName').value.trim();
+ const empNum = document.getElementById('newLaborEmpNum').value.trim();
+ if (!name || !empNum) return alert('Please enter employee name and ID number.');
+ showLoading('Adding employee...');
+ try {
+  const res = await apiCall({ action: 'addLabor', companyId: currentUser.companyId, laborName: name, employeeNumber: empNum });
+  if (res.success) {
+   document.getElementById('newLaborName').value = '';
+   document.getElementById('newLaborEmpNum').value = '';
+   await loadSupplierPortal();
+  } else { alert(res.error); }
+ } catch(e) { alert('Error: ' + e.message); }
+ hideLoading();
+}
+
+function renderLaborTable() {
+ const wrap = document.getElementById('laborTableWrap');
+ const labors = supplierData.labors || [];
+ if (labors.length === 0) {
+  wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:14px;">No employees added yet. Add your first employee above.</div>';
+  return;
+ }
+ wrap.innerHTML = `
+  <div class="labor-table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>Employee Name</th>
+     <th>Employee ID</th>
+     <th>Documents</th>
+     <th>Actions</th>
+    </tr>
+   </thead>
+   <tbody>
+    ${labors.map(l => {
+     const docsDone = LABOR_DOCS.filter(d => l.documents[d.key]).length;
+     return `
+     <tr>
+      <td><strong>${l.laborName}</strong></td>
+      <td>${l.employeeNumber}</td>
+      <td>
+       <div class="labor-doc-status">
+        ${LABOR_DOCS.map(d => `<span class="status-dot ${l.documents[d.key] ? 'ok' : 'miss'}" title="${d.label}"></span>`).join('')}
+       </div>
+       <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${docsDone}/${LABOR_DOCS.length} uploaded</div>
+      </td>
+      <td>
+       <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn-sm btn-upload" onclick="openLaborModal('${l.laborId}', '${l.laborName}', '${l.employeeNumber}')">📂 Manage Docs</button>
+        <button class="btn-sm btn-delete" onclick="deleteLabor('${l.laborId}', '${l.laborName}')">🗑</button>
+       </div>
+      </td>
+     </tr>`;
+    }).join('')}
+   </tbody>
+  </table>
+  </div>
+ `;
+}
+
+async function deleteLabor(laborId, name) {
+ if (!confirm('Delete employee ' + name + ' and all their documents?')) return;
+ showLoading('Deleting...');
+ await apiCall({ action: 'deleteLabor', laborId });
+ await loadSupplierPortal();
+ hideLoading();
+}
+
+function openLaborModal(laborId, laborName, empNum) {
+ currentLaborId = laborId;
+ const labor = supplierData.labors.find(l => l.laborId === laborId);
+ document.getElementById('laborModalTitle').textContent = laborName + ' · ' + empNum;
+ const body = document.getElementById('laborModalBody');
+
+ body.innerHTML = `
+  <div class="labor-doc-grid">
+   ${LABOR_DOCS.map(doc => {
+    const uploaded = labor.documents[doc.key];
+    return `
+     <div class="labor-doc-item ${uploaded ? 'uploaded' : ''}">
+      <div class="labor-doc-label">${doc.label}</div>
+      ${uploaded ? `
+       <div style="font-size:11px;color:var(--success);font-weight:600;">✓ Uploaded</div>
+       <div class="file-name">📎 ${uploaded.fileName}</div>
+       <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
+        <a href="${uploaded.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+        <button class="btn-sm btn-replace" onclick="triggerLaborUpload('${doc.key}', '${doc.accept}')">↑ Replace</button>
+        <button class="btn-sm btn-delete" onclick="deleteLaborDoc('${laborId}', '${doc.key}')">🗑</button>
+       </div>
+      ` : `
+       <button class="btn-sm btn-upload" style="margin-top:6px;" onclick="triggerLaborUpload('${doc.key}', '${doc.accept}')">⬆ Upload</button>
+      `}
+     </div>
+    `;
+   }).join('')}
+  </div>
+ `;
+
+ document.getElementById('laborModal').classList.add('open');
+}
+
+function closeLaborModal() {
+ document.getElementById('laborModal').classList.remove('open');
+ currentLaborId = null;
+}
+
+function triggerLaborUpload(docKey, accept) {
+ const input = document.getElementById('hiddenFileInput');
+ input.accept = accept;
+ input.value = '';
+ input.onchange = () => handleLaborDocUpload(docKey);
+ input.click();
+}
+
+async function handleLaborDocUpload(docKey) {
+ const input = document.getElementById('hiddenFileInput');
+ const file = input.files[0];
+ if (!file) return;
+ showLoading('Uploading...');
+ try {
+  const fileData = await fileToBase64(file);
+  const res = await apiCall({
+   action: 'uploadLaborDocument',
+   laborId: currentLaborId,
+   companyId: currentUser.companyId,
+   driveFolderID: currentUser.driveFolderID,
+   docType: docKey,
+   fileName: file.name,
+   fileData,
+   mimeType: file.type || 'application/octet-stream'
+  });
+  if (res.success) {
+   closeLaborModal();
+   await loadSupplierPortal();
+   // Reopen modal with updated data
+   const labor = supplierData.labors.find(l => l.laborId === currentLaborId);
+  } else { alert('Upload failed: ' + res.error); }
+ } catch(e) { alert('Error: ' + e.message); }
+ hideLoading();
+}
+
+async function deleteLaborDoc(laborId, docKey) {
+ if (!confirm('Remove this document?')) return;
+ showLoading('Removing...');
+ await apiCall({ action: 'deleteLaborDocument', laborId, docType: docKey });
+ closeLaborModal();
+ await loadSupplierPortal();
+ hideLoading();
+}
+
+// ============================================================
+// ADMIN DASHBOARD
+// ============================================================
+async function loadAdminDashboard() {
+ showLoading('Loading all suppliers...');
+ try {
+  const res = await apiCall({ action: 'getAllSuppliers' });
+  if (res.success) {
+   renderAdminDashboard(res.suppliers);
+  }
+ } catch(e) { alert('Error loading admin data.'); }
+ hideLoading();
+}
+
+function renderAdminDashboard(suppliers) {
+ const total = suppliers.length;
+ const complete = suppliers.filter(s => s.status === 'complete').length;
+ const totalLabors = suppliers.reduce((a, s) => a + s.laborCount, 0);
+
+ document.getElementById('adminStatsRow').innerHTML = `
+  <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-label">Total Suppliers</div></div>
+  <div class="stat-box"><div class="stat-num" style="color:var(--success)">${complete}</div><div class="stat-label">Complete Submissions</div></div>
+  <div class="stat-box"><div class="stat-num" style="color:var(--warning)">${total - complete}</div><div class="stat-label">Incomplete</div></div>
+  <div class="stat-box"><div class="stat-num">${totalLabors}</div><div class="stat-label">Total Employees</div></div>
+ `;
+
+ document.getElementById('supplierListWrap').innerHTML = suppliers.length === 0
+  ? '<div style="text-align:center;padding:40px;color:var(--text-muted);">No suppliers registered yet.</div>'
+  : suppliers.map(s => `
+   <div class="supplier-card" onclick="viewSupplierDetail('${s.companyId}')">
+    <div>
+     <div class="supplier-name">${s.companyName}</div>
+     <div class="supplier-meta">Registered: ${formatDate(s.registeredDate)} · ${s.laborCount} employees · ${s.uploadedDocCount} docs uploaded</div>
+     ${s.missingDocs.length > 0 ? `<div class="missing-list">Missing: ${s.missingDocs.map(d => COMPANY_DOCS.find(x=>x.key===d)?.label || d).join(', ')}</div>` : ''}
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+     <span class="status-badge ${s.status}">${s.status === 'complete' ? '✓ Complete' : '⚠ Incomplete'}</span>
+     <span style="color:var(--text-muted);font-size:18px;">›</span>
+    </div>
+   </div>
+  `).join('');
+}
+
+function showAdminList() {
+ document.getElementById('adminListView').style.display = '';
+ document.getElementById('adminDetailView').style.display = 'none';
+}
+
+async function viewSupplierDetail(companyId) {
+ showLoading('Loading supplier details...');
+ try {
+  const res = await apiCall({ action: 'getSupplierDetails', companyId });
+  if (res.success) {
+   document.getElementById('adminListView').style.display = 'none';
+   document.getElementById('adminDetailView').style.display = '';
+   renderSupplierDetail(res, companyId);
+  }
+ } catch(e) { alert('Error loading details.'); }
+ hideLoading();
+}
+
+function renderSupplierDetail(data, companyId) {
+ const content = document.getElementById('adminDetailContent');
+
+ const companyDocsHtml = COMPANY_DOCS.map(doc => {
+  const d = data.documents[doc.key];
+  const expired = d && doc.hasExpiry && isExpired(d.expiryDate);
+  return `
+   <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+    <div>
+     <div style="font-size:13px;font-weight:600;">${doc.label}${doc.mandatory?'<span class="required-star">*</span>':''}</div>
+     ${d ? `<div style="font-size:11px;color:var(--text-muted);">${d.fileName} · Uploaded: ${formatDate(d.uploadDate)}</div>` : ''}
+     ${d && doc.hasExpiry ? `<div style="font-size:11px;color:${expired?'var(--danger)':'var(--text-muted)'};">Expiry: ${formatDate(d.expiryDate)} ${expired?'⚠ EXPIRED':''}</div>` : ''}
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;">
+     ${d ? `
+      <span class="doc-badge ${expired?'exp':'ok'}">${expired?'Expired':'✓'}</span>
+      <a href="${d.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+     ` : `<span class="doc-badge pending">Missing</span>`}
+    </div>
+   </div>
+  `;
+ }).join('');
+
+ const laborsHtml = (data.labors || []).map(l => {
+  const docsDone = LABOR_DOCS.filter(d => l.documents[d.key]).length;
+  return `
+   <tr>
+    <td><strong>${l.laborName}</strong></td>
+    <td>${l.employeeNumber}</td>
+    <td>
+     <div class="labor-doc-status">
+      ${LABOR_DOCS.map(d => `<span class="status-dot ${l.documents[d.key]?'ok':'miss'}" title="${d.label}: ${l.documents[d.key]?'Uploaded':'Missing'}"></span>`).join('')}
+     </div>
+     <div style="font-size:11px;color:var(--text-muted);">${docsDone}/${LABOR_DOCS.length}</div>
+    </td>
+    <td>
+     ${LABOR_DOCS.map(d => l.documents[d.key] ? `<a href="${l.documents[d.key].driveLink}" target="_blank" class="btn-sm btn-view" style="margin:2px;display:inline-block;">${d.label.split(' ').slice(0,2).join(' ')}</a>` : '').join('')}
+    </td>
+   </tr>
+  `;
+ }).join('');
+
+ const commentsHtml = (data.comments || []).map(c => `
+  <div class="comment-bubble">
+   <div class="comment-text">${c.comment}</div>
+   <div class="comment-meta">${formatDate(c.date)} <span class="comment-status ${c.status}">${c.status}</span></div>
+  </div>
+ `).join('');
+
+ content.innerHTML = `
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+   <div>
+    <div class="page-heading">${data.companyName}</div>
+    <div class="page-sub">Supplier submission details</div>
+   </div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <a href="${data.driveLink}" target="_blank" class="drive-link-btn">📁 Open Drive Folder</a>
+    <button class="btn-sm btn-upload" onclick="downloadAllDocs('${companyId}', '${data.companyName}', '${data.driveFolderID}')" style="padding:7px 14px;font-size:13px;">⬇ Download Info</button>
+   </div>
+  </div>
+
+  <div class="card">
+   <div class="card-header"><div class="card-title">🏢 Company Documents</div></div>
+   <div class="card-body">${companyDocsHtml}</div>
+  </div>
+
+  <div class="card">
+   <div class="card-header"><div class="card-title">👷 Employees (${(data.labors||[]).length})</div></div>
+   <div class="card-body">
+    ${(data.labors||[]).length === 0 ? '<div style="color:var(--text-muted);font-size:14px;">No employees added.</div>' : `
+    <div class="labor-table-wrap"><table>
+     <thead><tr><th>Name</th><th>Emp. ID</th><th>Doc Status</th><th>View Docs</th></tr></thead>
+     <tbody>${laborsHtml}</tbody>
+    </table></div>`}
+   </div>
+  </div>
+
+  <div class="card">
+   <div class="card-header"><div class="card-title">💬 Admin Comments & Review</div></div>
+   <div class="card-body">
+    ${commentsHtml || '<div style="color:var(--text-muted);font-size:14px;margin-bottom:14px;">No comments yet.</div>'}
+    <hr class="divider">
+    <div class="form-group"><label>Add Comment / Feedback</label><textarea id="newComment" rows="3" placeholder="Enter feedback for the supplier..."></textarea></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+     <select id="commentStatus" style="width:auto;flex:none;padding:8px 12px;">
+      <option value="pending">Mark as Pending</option>
+      <option value="revision">Needs Revision</option>
+      <option value="approved">Approved</option>
+     </select>
+     <button class="btn-sm btn-upload" onclick="submitComment('${companyId}')" style="padding:9px 18px;font-size:13px;">Send Comment</button>
+    </div>
+   </div>
+  </div>
+ `;
+}
+
+async function submitComment(companyId) {
+ const comment = document.getElementById('newComment').value.trim();
+ const status = document.getElementById('commentStatus').value;
+ if (!comment) return alert('Please enter a comment.');
+ showLoading('Sending comment...');
+ await apiCall({ action: 'addAdminComment', companyId, comment, status });
+ await viewSupplierDetail(companyId);
+ hideLoading();
+}
+
+function downloadAllDocs(companyId, companyName, driveFolderID) {
+ // Open the Drive folder — all files are there organized by supplier
+ const driveLink = 'https://drive.google.com/drive/folders/' + driveFolderID;
+ const info = `Supplier: ${companyName}\nDrive Folder: ${driveLink}\n\nAll documents are stored in Google Drive in organized subfolders:\n- Company_Documents/\n- Labor_Documents/\n\nOpen the Drive folder to download all files as a ZIP using Google Drive's built-in download feature.`;
+ const blob = new Blob([info], { type: 'text/plain' });
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = companyName.replace(/\s+/g,'_') + '_Drive_Info.txt';
+ a.click();
+ URL.revokeObjectURL(url);
+
+ setTimeout(() => window.open(driveLink, '_blank'), 500);
+}
+
+// Close modal on overlay click
+document.getElementById('laborModal').addEventListener('click', function(e) {
+ if (e.target === this) closeLaborModal();
+});
+</script>
+</body>
+</html>
