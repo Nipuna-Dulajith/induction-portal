@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Induction Document Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#1a3a5c;--primary-light:#2a5a8c;--accent:#e8a020;--accent-light:#f5c05a;--bg:#f4f6f9;--card:#ffffff;--text:#1a2332;--text-muted:#6b7a8d;--border:#dde3ed;--success:#1e8a4a;--success-bg:#e6f5ed;--danger:#c0392b;--danger-bg:#fdeaea;--warning:#d68910;--warning-bg:#fef9e7;--info:#1565c0;--info-bg:#e3f0ff;--radius:10px;--shadow:0 2px 12px rgba(26,58,92,0.08);--shadow-lg:0 8px 32px rgba(26,58,92,0.14)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.site-header{background:var(--primary);color:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,0.18)}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.logo-area{display:flex;align-items:center;gap:14px}
+.logo-badge{background:var(--accent);color:var(--primary);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;padding:6px 14px;border-radius:6px;letter-spacing:1px}
+.site-title{font-size:16px;font-weight:500;opacity:.92}
+.site-subtitle{font-size:12px;opacity:.65;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:10px}
+.user-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 14px;font-size:13px;color:white;display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.btn-logout{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:white;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;transition:background .2s}
+.btn-logout:hover{background:rgba(255,255,255,0.2)}
+.screen{display:none}.screen.active{display:block}
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a3a5c 0%,#2a5a8c 50%,#1a3a5c 100%);padding:24px}
+.auth-card{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.auth-logo{text-align:center;margin-bottom:28px}
+.auth-badge{display:inline-block;background:var(--primary);color:var(--accent);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:28px;padding:10px 22px;border-radius:10px;letter-spacing:2px;margin-bottom:10px}
+.auth-tagline{color:var(--text-muted);font-size:14px}
+.tab-bar{display:flex;background:var(--bg);border-radius:8px;padding:4px;margin-bottom:24px}
+.tab-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-muted);transition:all .2s;font-family:inherit}
+.tab-btn.active{background:white;color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:6px}
+input[type=text],input[type=password],input[type=date],select,textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;background:white;color:var(--text);transition:border .2s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+.btn-primary{width:100%;padding:12px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s;font-family:inherit}
+.btn-primary:hover{background:var(--primary-light)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.auth-note{text-align:center;font-size:12px;color:var(--text-muted);margin-top:12px}
+.alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}
+.alert.error{background:var(--danger-bg);color:var(--danger);display:block}
+.alert.success{background:var(--success-bg);color:var(--success);display:block}
+.main-layout{max-width:1100px;margin:0 auto;padding:28px 24px}
+.page-heading{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:var(--primary);margin-bottom:4px}
+.page-sub{color:var(--text-muted);font-size:14px;margin-bottom:24px}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fafbfd}
+.card-title{font-size:15px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.doc-grid{grid-template-columns:1fr}}
+.doc-item{border:1.5px dashed var(--border);border-radius:10px;padding:16px;position:relative;transition:border-color .2s}
+.doc-item.uploaded{border:1.5px solid var(--success);background:var(--success-bg)}
+.doc-item.expired{border:1.5px solid var(--danger);background:var(--danger-bg)}
+.doc-item.rejected{border:1.5px solid var(--danger);background:var(--danger-bg)}
+.doc-item.approved{border:1.5px solid var(--success);background:var(--success-bg)}
+.doc-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px}
+.doc-badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;margin-bottom:6px;margin-right:4px}
+.doc-badge.pending{background:#eee;color:var(--text-muted)}
+.doc-badge.ok{background:var(--success-bg);color:var(--success)}
+.doc-badge.exp{background:var(--danger-bg);color:var(--danger)}
+.doc-badge.mandatory{background:#fff3cd;color:#856404}
+.doc-badge.approved{background:var(--success-bg);color:var(--success)}
+.doc-badge.rejected{background:var(--danger-bg);color:var(--danger)}
+.doc-badge.review{background:var(--warning-bg);color:var(--warning)}
+.doc-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.btn-sm{padding:5px 11px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:opacity .2s}
+.btn-sm:hover{opacity:.85}
+.btn-upload{background:var(--primary);color:white}
+.btn-view{background:var(--info-bg);color:var(--info)}
+.btn-delete{background:var(--danger-bg);color:var(--danger)}
+.btn-replace{background:var(--warning-bg);color:var(--warning)}
+.btn-approve{background:var(--success-bg);color:var(--success)}
+.btn-reject{background:var(--danger-bg);color:var(--danger)}
+.expiry-row{margin-top:8px;display:flex;gap:6px;align-items:center}
+.expiry-row input[type=date]{flex:1;padding:5px 10px;font-size:12px}
+.file-name{font-size:11px;color:var(--text-muted);margin-top:4px;word-break:break-all}
+.approval-note{font-size:11px;padding:4px 8px;border-radius:6px;margin-top:6px;font-style:italic}
+.approval-note.approved{background:var(--success-bg);color:var(--success)}
+.approval-note.rejected{background:var(--danger-bg);color:var(--danger)}
+input[type=file]{display:none}
+.labor-table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f0f3f8;color:var(--primary);font-weight:600;padding:10px 12px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8faff}
+.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.status-dot.ok{background:var(--success)}
+.status-dot.miss{background:#ddd}
+.status-dot.approved{background:var(--success)}
+.status-dot.rejected{background:var(--danger)}
+.status-dot.pending{background:var(--warning)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:white;border-radius:14px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.modal-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fafbfd;border-radius:14px 14px 0 0;position:sticky;top:0;z-index:1}
+.modal-title{font-size:16px;font-weight:600;color:var(--primary)}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-muted);line-height:1}
+.modal-body{padding:22px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:22px}
+.stat-box{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.stat-num{font-size:26px;font-weight:700;color:var(--primary);font-family:'Space Grotesk',sans-serif}
+.stat-label{font-size:12px;color:var(--text-muted);margin-top:2px}
+.supplier-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;transition:box-shadow .2s;flex-wrap:wrap}
+.supplier-card:hover{box-shadow:var(--shadow-lg)}
+.supplier-name{font-weight:600;font-size:15px;color:var(--primary)}
+.supplier-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
+.status-badge{padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600}
+.status-badge.complete{background:var(--success-bg);color:var(--success)}
+.status-badge.incomplete{background:var(--warning-bg);color:var(--warning)}
+.comment-bubble{background:var(--info-bg);border-left:3px solid var(--info);border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.comment-text{font-size:14px;color:var(--text)}
+.comment-meta{font-size:11px;color:var(--text-muted);margin-top:4px}
+.comment-status{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:6px}
+.comment-status.approved{background:var(--success-bg);color:var(--success)}
+.comment-status.revision{background:var(--danger-bg);color:var(--danger)}
+.comment-status.pending{background:#eee;color:var(--text-muted)}
+.progress-bar-wrap{background:var(--bg);border-radius:4px;height:6px;overflow:hidden;margin-top:6px}
+.progress-bar-fill{height:100%;background:var(--success);border-radius:4px;transition:width .4s}
+.spinner{border:3px solid var(--border);border-top:3px solid var(--primary);border-radius:50%;width:22px;height:22px;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.8);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.loading-overlay.show{display:flex}
+.loading-text{font-size:14px;color:var(--primary);font-weight:500}
+.add-person-form{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+.add-person-form .form-group{margin:0;flex:1;min-width:160px}
+.btn-add{padding:10px 18px;background:var(--accent);color:var(--primary);border:none;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;font-size:14px;white-space:nowrap}
+.btn-add:hover{background:var(--accent-light)}
+.required-star{color:var(--danger);margin-left:2px}
+.back-btn{background:none;border:1.5px solid var(--border);border-radius:7px;padding:7px 14px;cursor:pointer;font-size:13px;color:var(--primary);font-family:inherit;font-weight:500;margin-bottom:16px;display:inline-flex;align-items:center;gap:5px}
+.back-btn:hover{background:var(--bg)}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+.missing-list{font-size:12px;color:var(--danger);margin-top:4px}
+.drive-link-btn{background:#e8f0fe;color:#1a73e8;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.person-doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:480px){.person-doc-grid{grid-template-columns:1fr}}
+.person-doc-item{border:1.5px dashed var(--border);border-radius:8px;padding:12px}
+.person-doc-item.uploaded{border:1.5px solid var(--success);background:var(--success-bg)}
+.person-doc-item.rejected{border:1.5px solid var(--danger);background:var(--danger-bg)}
+.person-doc-label{font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
+.tabs-nav{display:flex;gap:4px;background:var(--bg);border-radius:8px;padding:4px;margin-bottom:20px}
+.tabs-nav-btn{flex:1;padding:9px;border:none;background:transparent;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;color:var(--text-muted);font-family:inherit;transition:all .2s}
+.tabs-nav-btn.active{background:var(--primary);color:white}
+.approval-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.admin-doc-approval{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px}
+.admin-doc-approval textarea{font-size:12px;padding:6px 10px;border-radius:6px;margin-bottom:6px;min-height:50px}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Processing...</div>
+</div>
+
+<!-- AUTH SCREEN -->
+<div class="screen active" id="authScreen">
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-badge">PORTAL</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#1a3a5c;margin-top:8px;">Site Induction Document Portal</div>
+      <div class="auth-tagline">Upload and manage your induction documents</div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchAuthTab('login')">Supplier Login</button>
+      <button class="tab-btn" onclick="switchAuthTab('register')">Register</button>
+      <button class="tab-btn" onclick="switchAuthTab('admin')">Admin</button>
+    </div>
+    <div id="tabLogin">
+      <div class="alert" id="loginAlert"></div>
+      <div class="form-group"><label>Company Name</label><input type="text" id="loginCompany" placeholder="Registered company name"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password"></div>
+      <button class="btn-primary" onclick="doLogin()">Login to Portal</button>
+      <div class="auth-note">Contact site admin if you forgot your password.</div>
+    </div>
+    <div id="tabRegister" style="display:none">
+      <div class="alert" id="registerAlert"></div>
+      <div class="form-group"><label>Company Name <span class="required-star">*</span></label><input type="text" id="regCompany" placeholder="Your company name"></div>
+      <div class="form-group"><label>Password <span class="required-star">*</span></label><input type="password" id="regPassword" placeholder="Choose a password"></div>
+      <div class="form-group"><label>Confirm Password <span class="required-star">*</span></label><input type="password" id="regConfirm" placeholder="Confirm password"></div>
+      <button class="btn-primary" onclick="doRegister()">Create Account</button>
+    </div>
+    <div id="tabAdmin" style="display:none">
+      <div class="alert" id="adminAlert"></div>
+      <div class="form-group"><label>Admin Password</label><input type="password" id="adminPassword" placeholder="Admin password"></div>
+      <button class="btn-primary" onclick="doAdminLogin()">Admin Login</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SUPPLIER SCREEN -->
+<div class="screen" id="supplierScreen">
+  <div class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-badge">PORTAL</div>
+        <div><div class="site-title">Site Induction Document Portal</div><div class="site-subtitle">Supplier Submission</div></div>
+      </div>
+      <div class="header-right">
+        <div class="user-pill"><div class="dot"></div><span id="headerCompanyName">Company</span></div>
+        <button class="btn-logout" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+  <div class="main-layout">
+    <div id="supplierCommentsSection" style="display:none" class="card">
+      <div class="card-header"><div class="card-title">📋 Admin Comments</div></div>
+      <div class="card-body" id="supplierCommentsList"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📊 Submission Progress</div></div>
+      <div class="card-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:14px;color:var(--text-muted)">Mandatory company documents</span>
+          <span style="font-size:14px;font-weight:600;color:var(--primary)" id="progressText">0 / 6</span>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🏢 Company Documents</div></div>
+      <div class="card-body"><div class="doc-grid" id="companyDocsGrid"></div></div>
+    </div>
+    <!-- Labor & Operator tabs -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">👷 Workforce Documents</div></div>
+      <div class="card-body">
+        <div class="tabs-nav">
+          <button class="tabs-nav-btn active" onclick="switchWorkforceTab('labor')">Labors / Employees</button>
+          <button class="tabs-nav-btn" onclick="switchWorkforceTab('operator')">Operators</button>
+        </div>
+        <!-- LABOR TAB -->
+        <div id="wfTabLabor">
+          <div class="add-person-form">
+            <div class="form-group"><label>Full Name</label><input type="text" id="newLaborName" placeholder="Employee full name"></div>
+            <div class="form-group"><label>Employee ID</label><input type="text" id="newLaborEmpNum" placeholder="Employee ID number"></div>
+            <button class="btn-add" onclick="addLabor()">+ Add</button>
+          </div>
+          <div id="laborTableWrap"><div style="text-align:center;padding:30px;color:var(--text-muted);font-size:14px">No employees added yet.</div></div>
+        </div>
+        <!-- OPERATOR TAB -->
+        <div id="wfTabOperator" style="display:none">
+          <div class="add-person-form">
+            <div class="form-group"><label>Full Name</label><input type="text" id="newOperatorName" placeholder="Operator full name"></div>
+            <div class="form-group"><label>Employee ID</label><input type="text" id="newOperatorEmpNum" placeholder="Employee ID number"></div>
+            <button class="btn-add" onclick="addOperator()">+ Add</button>
+          </div>
+          <div id="operatorTableWrap"><div style="text-align:center;padding:30px;color:var(--text-muted);font-size:14px">No operators added yet.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div class="screen" id="adminScreen">
+  <div class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-badge">PORTAL</div>
+        <div><div class="site-title">Site Induction Document Portal</div><div class="site-subtitle">Admin Dashboard</div></div>
+      </div>
+      <div class="header-right">
+        <div class="user-pill"><div class="dot" style="background:#4ade80"></div><span>Admin</span></div>
+        <button class="btn-logout" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+  <div class="main-layout" id="adminListView">
+    <div class="page-heading">All Suppliers</div>
+    <div class="page-sub">Manage all registered supplier submissions</div>
+    <div class="stats-row" id="adminStatsRow"></div>
+    <button class="btn-sm btn-upload" onclick="loadAdminDashboard()" style="padding:8px 18px;font-size:13px;margin-bottom:16px">🔄 Refresh</button>
+    <div id="supplierListWrap"></div>
+  </div>
+  <div class="main-layout" id="adminDetailView" style="display:none">
+    <button class="back-btn" onclick="showAdminList()">← Back to All Suppliers</button>
+    <div id="adminDetailContent"></div>
+  </div>
+</div>
+
+<!-- PERSON DOCS MODAL -->
+<div class="modal-overlay" id="personModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="personModalTitle">Documents</div>
+      <button class="modal-close" onclick="closePersonModal()">×</button>
+    </div>
+    <div class="modal-body" id="personModalBody"></div>
+  </div>
+</div>
+
+<!-- ADMIN DOC APPROVAL MODAL -->
+<div class="modal-overlay" id="approvalModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Document Review</div>
+      <button class="modal-close" onclick="closeApprovalModal()">×</button>
+    </div>
+    <div class="modal-body" id="approvalModalBody"></div>
+  </div>
+</div>
+
+<input type="file" id="hiddenFileInput">
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbz_xYuxs91WGU9TG6LSPXfMl3rUrkeUjIda0iJs-XvJcS6wiRgeozcl8p-0z71_tMmV/exec';
+
+// ============================================================
+// STATE
+// ============================================================
+let currentUser = null;
+let supplierData = null;
+let currentPersonId = null;
+let currentPersonType = null;
+let currentAdminCompanyId = null;
+
+// Company document definitions
+const COMPANY_DOCS = [
+  {key:'trade_license',label:'Trade License',mandatory:true,hasExpiry:true,accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'undertaking_letter',label:'Undertaking Letter',mandatory:true,hasExpiry:false,accept:'.pdf,.doc,.docx,.jpg,.jpeg,.png'},
+  {key:'contract_agreement',label:'Contract Agreement / LPO (if secondary subcontractor)',mandatory:false,hasExpiry:false,accept:'.pdf,.doc,.docx'},
+  {key:'signing_authority_id',label:"Signing Authority's Emirates ID",mandatory:true,hasExpiry:true,accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'health_insurance',label:'Health Insurance Policy with Employee List',mandatory:true,hasExpiry:true,accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'workmen_compensation',label:'Workmen Compensation Policy with Employee List',mandatory:true,hasExpiry:true,accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'attendance_excel',label:'Attendance & HSE Induction Excel (Employee Details)',mandatory:true,hasExpiry:false,accept:'.xls,.xlsx'},
+];
+
+const LABOR_DOCS = [
+  {key:'passport_copy',label:'Colored Passport Copy',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'emirates_id',label:'Colored Emirates ID',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'work_permit',label:'Valid Work Permit (MOHRE)',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'passport_photo',label:'Passport Size Photo (JPG, white background)',accept:'.jpg,.jpeg'},
+  {key:'occ_health_cert',label:'Occupational Health Certificate',accept:'.pdf,.jpg,.jpeg,.png'},
+];
+
+const OPERATOR_DOCS = [
+  {key:'passport_copy',label:'Colored Passport Copy',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'emirates_id',label:'Colored Emirates ID',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'work_permit',label:'Valid Work Permit (MOHRE)',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'passport_photo',label:'Passport Size Photo (JPG, white background)',accept:'.jpg,.jpeg'},
+  {key:'occ_health_cert',label:'Occupational Health Certificate',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'equipment_3p_cert',label:'Equipment Third Party Certificate (Enas approved)',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'equipment_license',label:'Equipment License',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'equipment_maintenance',label:'Equipment Maintenance Record',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'operator_training_cert',label:'Operator Third Party Training Certificate (Actvet approved)',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'operator_license',label:'Operator License',accept:'.pdf,.jpg,.jpeg,.png'},
+  {key:'medical_examination',label:'Medical Examination Report (OSHAD)',accept:'.pdf,.jpg,.jpeg,.png'},
+];
+
+// ============================================================
+// UTILS
+// ============================================================
+function showLoading(msg){document.getElementById('loadingText').textContent=msg||'Processing...';document.getElementById('loadingOverlay').classList.add('show')}
+function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
+async function apiCall(payload){
+  const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(payload),headers:{'Content-Type':'text/plain'}});
+  return await res.json();
+}
+function showAlert(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='alert '+type}
+function fileToBase64(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.onerror=reject;r.readAsDataURL(file)})}
+function isExpired(d){if(!d)return false;return new Date(d)<new Date()}
+function formatDate(d){if(!d)return '—';return new Date(d).toLocaleDateString('en-AE',{day:'2-digit',month:'short',year:'numeric'})}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function approvalBadge(status){
+  if(status==='approved') return '<span class="doc-badge approved">✓ Approved</span>';
+  if(status==='rejected') return '<span class="doc-badge rejected">✗ Rejected</span>';
+  return '<span class="doc-badge review">⏳ Under Review</span>';
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+function switchAuthTab(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['login','register','admin'][i]===tab));
+  document.getElementById('tabLogin').style.display=tab==='login'?'':'none';
+  document.getElementById('tabRegister').style.display=tab==='register'?'':'none';
+  document.getElementById('tabAdmin').style.display=tab==='admin'?'':'none';
+}
+async function doLogin(){
+  const companyName=document.getElementById('loginCompany').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  if(!companyName||!password)return showAlert('loginAlert','Please enter company name and password.','error');
+  showLoading('Logging in...');
+  try{
+    const res=await apiCall({action:'login',companyName,password});
+    if(res.success){currentUser={companyId:res.companyId,companyName:res.companyName,driveFolderID:res.driveFolderID,role:'supplier'};await loadSupplierPortal();showScreen('supplierScreen');}
+    else showAlert('loginAlert',res.error,'error');
+  }catch(e){showAlert('loginAlert','Connection error. Check API URL.','error');}
+  hideLoading();
+}
+async function doRegister(){
+  const companyName=document.getElementById('regCompany').value.trim();
+  const password=document.getElementById('regPassword').value;
+  const confirm=document.getElementById('regConfirm').value;
+  if(!companyName||!password)return showAlert('registerAlert','All fields are required.','error');
+  if(password!==confirm)return showAlert('registerAlert','Passwords do not match.','error');
+  if(password.length<6)return showAlert('registerAlert','Password must be at least 6 characters.','error');
+  showLoading('Creating account...');
+  try{
+    const res=await apiCall({action:'register',companyName,password});
+    if(res.success){showAlert('registerAlert','Account created! Please login.','success');setTimeout(()=>switchAuthTab('login'),2000);}
+    else showAlert('registerAlert',res.error,'error');
+  }catch(e){showAlert('registerAlert','Connection error.','error');}
+  hideLoading();
+}
+async function doAdminLogin(){
+  const password=document.getElementById('adminPassword').value;
+  showLoading('Authenticating...');
+  try{
+    const res=await apiCall({action:'adminLogin',password});
+    if(res.success){currentUser={role:'admin'};await loadAdminDashboard();showScreen('adminScreen');}
+    else showAlert('adminAlert',res.error,'error');
+  }catch(e){showAlert('adminAlert','Connection error.','error');}
+  hideLoading();
+}
+function doLogout(){currentUser=null;supplierData=null;document.getElementById('loginCompany').value='';document.getElementById('loginPassword').value='';document.getElementById('adminPassword').value='';showScreen('authScreen');switchAuthTab('login');}
+
+// ============================================================
+// SUPPLIER PORTAL
+// ============================================================
+async function loadSupplierPortal(){
+  document.getElementById('headerCompanyName').textContent=currentUser.companyName;
+  showLoading('Loading your data...');
+  try{
+    const res=await apiCall({action:'getSupplierData',companyId:currentUser.companyId});
+    if(res.success){supplierData=res;renderCompanyDocs();renderPersonTable('labor');renderPersonTable('operator');renderSupplierComments();updateProgress();}
+  }catch(e){alert('Error loading data.');}
+  hideLoading();
+}
+
+function updateProgress(){
+  const mandatory=COMPANY_DOCS.filter(d=>d.mandatory);
+  const uploaded=mandatory.filter(d=>supplierData.documents[d.key]).length;
+  const pct=Math.round((uploaded/mandatory.length)*100);
+  document.getElementById('progressText').textContent=uploaded+' / '+mandatory.length;
+  document.getElementById('progressBar').style.width=pct+'%';
+}
+
+function renderSupplierComments(){
+  const comments=supplierData.comments||[];
+  const section=document.getElementById('supplierCommentsSection');
+  const list=document.getElementById('supplierCommentsList');
+  if(!comments.length){section.style.display='none';return;}
+  section.style.display='';
+  list.innerHTML=comments.map(c=>`
+    <div class="comment-bubble">
+      <div>
+        <div class="comment-text">${c.comment}</div>
+        <div class="comment-meta">Admin · ${formatDate(c.date)}<span class="comment-status ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function switchWorkforceTab(tab){
+  document.querySelectorAll('.tabs-nav-btn').forEach((b,i)=>b.classList.toggle('active',['labor','operator'][i]===tab));
+  document.getElementById('wfTabLabor').style.display=tab==='labor'?'':'none';
+  document.getElementById('wfTabOperator').style.display=tab==='operator'?'':'none';
+}
+
+function renderCompanyDocs(){
+  const grid=document.getElementById('companyDocsGrid');
+  grid.innerHTML=COMPANY_DOCS.map(doc=>{
+    const uploaded=supplierData.documents[doc.key];
+    const expired=uploaded&&doc.hasExpiry&&isExpired(uploaded.expiryDate);
+    const approval=uploaded?uploaded.approvalStatus:'';
+    let itemClass='';
+    if(uploaded){itemClass=approval==='rejected'?'rejected':approval==='approved'?'approved':'uploaded';}
+    if(expired)itemClass='expired';
+    return `
+      <div class="doc-item ${itemClass}" id="docItem_${doc.key}">
+        <div class="doc-label">${doc.label}${doc.mandatory?'<span class="required-star">*</span>':''}</div>
+        ${doc.mandatory?'<span class="doc-badge mandatory">Mandatory</span>':''}
+        ${uploaded?`
+          ${approvalBadge(approval)}
+          ${expired?'<span class="doc-badge exp">⚠ EXPIRED</span>':''}
+          <div class="file-name">📎 ${uploaded.fileName}</div>
+          ${doc.hasExpiry?`<div class="file-name">Expiry: ${formatDate(uploaded.expiryDate)}</div>`:''}
+          ${uploaded.approvalComment?`<div class="approval-note ${approval}">${uploaded.approvalComment}</div>`:''}
+          <div class="doc-actions">
+            <a href="${uploaded.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+            <button class="btn-sm btn-replace" onclick="triggerUpload('${doc.key}','${doc.accept}',${doc.hasExpiry})">↑ Replace</button>
+            <button class="btn-sm btn-delete" onclick="deleteCompanyDoc('${doc.key}')">🗑 Remove</button>
+          </div>
+          ${doc.hasExpiry?`<div class="expiry-row"><input type="date" id="expiry_${doc.key}" value="${uploaded.expiryDate||''}"><button class="btn-sm btn-upload" onclick="saveExpiry('${doc.key}')">Save Expiry</button></div>`:''}
+        `:`
+          <div class="doc-actions"><button class="btn-sm btn-upload" onclick="triggerUpload('${doc.key}','${doc.accept}',${doc.hasExpiry})">⬆ Upload</button></div>
+          ${doc.hasExpiry?`<div class="expiry-row"><input type="date" id="expiry_${doc.key}" placeholder="Set expiry date"></div>`:''}
+        `}
+      </div>`;
+  }).join('');
+}
+
+function triggerUpload(docKey,accept,hasExpiry){
+  const input=document.getElementById('hiddenFileInput');
+  input.accept=accept;input.value='';
+  input.onchange=()=>handleCompanyDocUpload(docKey,hasExpiry===true||hasExpiry==='true');
+  input.click();
+}
+
+async function handleCompanyDocUpload(docKey,hasExpiry){
+  const file=document.getElementById('hiddenFileInput').files[0];
+  if(!file)return;
+  let expiryDate='';
+  if(hasExpiry){const ei=document.getElementById('expiry_'+docKey);expiryDate=ei?ei.value:'';}
+  showLoading('Uploading '+file.name+'...');
+  try{
+    const fileData=await fileToBase64(file);
+    const res=await apiCall({action:'uploadDocument',companyId:currentUser.companyId,driveFolderID:currentUser.driveFolderID,docType:docKey,fileName:file.name,fileData,mimeType:file.type||'application/octet-stream',expiryDate});
+    if(res.success)await loadSupplierPortal();
+    else alert('Upload failed: '+res.error);
+  }catch(e){alert('Upload error: '+e.message);}
+  hideLoading();
+}
+
+async function deleteCompanyDoc(docKey){
+  if(!confirm('Remove this document? You can re-upload later.'))return;
+  showLoading('Removing...');
+  await apiCall({action:'deleteDocument',companyId:currentUser.companyId,docType:docKey});
+  await loadSupplierPortal();hideLoading();
+}
+
+async function saveExpiry(docKey){
+  const val=document.getElementById('expiry_'+docKey).value;
+  if(!val)return alert('Please select an expiry date.');
+  showLoading('Saving...');
+  await apiCall({action:'updateDocumentExpiry',companyId:currentUser.companyId,docType:docKey,expiryDate:val});
+  await loadSupplierPortal();hideLoading();
+}
+
+// ============================================================
+// LABOR
+// ============================================================
+async function addLabor(){
+  const name=document.getElementById('newLaborName').value.trim();
+  const empNum=document.getElementById('newLaborEmpNum').value.trim();
+  if(!name||!empNum)return alert('Please enter name and employee ID.');
+  showLoading('Adding employee...');
+  const res=await apiCall({action:'addLabor',companyId:currentUser.companyId,laborName:name,employeeNumber:empNum});
+  if(res.success){document.getElementById('newLaborName').value='';document.getElementById('newLaborEmpNum').value='';await loadSupplierPortal();}
+  else alert(res.error);
+  hideLoading();
+}
+
+async function addOperator(){
+  const name=document.getElementById('newOperatorName').value.trim();
+  const empNum=document.getElementById('newOperatorEmpNum').value.trim();
+  if(!name||!empNum)return alert('Please enter name and employee ID.');
+  showLoading('Adding operator...');
+  const res=await apiCall({action:'addOperator',companyId:currentUser.companyId,operatorName:name,employeeNumber:empNum});
+  if(res.success){document.getElementById('newOperatorName').value='';document.getElementById('newOperatorEmpNum').value='';await loadSupplierPortal();}
+  else alert(res.error);
+  hideLoading();
+}
+
+function renderPersonTable(type){
+  const isOp=type==='operator';
+  const items=isOp?(supplierData.operators||[]):(supplierData.labors||[]);
+  const docs=isOp?OPERATOR_DOCS:LABOR_DOCS;
+  const wrapId=isOp?'operatorTableWrap':'laborTableWrap';
+  const wrap=document.getElementById(wrapId);
+  if(!items.length){wrap.innerHTML=`<div style="text-align:center;padding:30px;color:var(--text-muted);font-size:14px">No ${isOp?'operators':'employees'} added yet.</div>`;return;}
+  wrap.innerHTML=`<div class="labor-table-wrap"><table>
+    <thead><tr><th>Name</th><th>Emp. ID</th><th>Documents</th><th>Actions</th></tr></thead>
+    <tbody>
+    ${items.map(p=>{
+      const id=isOp?p.operatorId:p.laborId;
+      const name=isOp?p.operatorName:p.laborName;
+      const done=docs.filter(d=>p.documents[d.key]).length;
+      const dotColors=docs.map(d=>{
+        if(!p.documents[d.key])return 'miss';
+        return p.documents[d.key].approvalStatus||'pending';
+      });
+      return `<tr>
+        <td><strong>${name}</strong></td>
+        <td>${p.employeeNumber}</td>
+        <td>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">${docs.map((d,i)=>`<span class="status-dot ${dotColors[i]}" title="${d.label}"></span>`).join('')}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${done}/${docs.length} uploaded</div>
+        </td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn-sm btn-upload" onclick="openPersonModal('${id}','${name}','${p.employeeNumber}','${type}')">📂 Manage Docs</button>
+            <button class="btn-sm btn-delete" onclick="deletePerson('${id}','${name}','${type}')">🗑</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('')}
+    </tbody></table></div>`;
+}
+
+async function deletePerson(id,name,type){
+  if(!confirm('Delete '+name+' and all their documents?'))return;
+  showLoading('Deleting...');
+  const action=type==='operator'?'deleteOperator':'deleteLabor';
+  const payload=type==='operator'?{action,operatorId:id}:{action,laborId:id};
+  await apiCall(payload);
+  await loadSupplierPortal();hideLoading();
+}
+
+function openPersonModal(id,name,empNum,type){
+  currentPersonId=id;currentPersonType=type;
+  const isOp=type==='operator';
+  const items=isOp?(supplierData.operators||[]):(supplierData.labors||[]);
+  const person=items.find(p=>(isOp?p.operatorId:p.laborId)===id);
+  const docs=isOp?OPERATOR_DOCS:LABOR_DOCS;
+  document.getElementById('personModalTitle').textContent=name+' · '+empNum+' ('+(isOp?'Operator':'Labor')+')';
+  const body=document.getElementById('personModalBody');
+  body.innerHTML=`<div class="person-doc-grid">${docs.map(doc=>{
+    const uploaded=person.documents[doc.key];
+    const approval=uploaded?uploaded.approvalStatus:'';
+    let cls=uploaded?(approval==='rejected'?'rejected':'uploaded'):'';
+    return `<div class="person-doc-item ${cls}">
+      <div class="person-doc-label">${doc.label}</div>
+      ${uploaded?`
+        ${approvalBadge(approval)}
+        <div class="file-name">📎 ${uploaded.fileName}</div>
+        ${uploaded.approvalComment?`<div class="approval-note ${approval}">${uploaded.approvalComment}</div>`:''}
+        <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap">
+          <a href="${uploaded.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+          <button class="btn-sm btn-replace" onclick="triggerPersonUpload('${doc.key}','${doc.accept}')">↑ Replace</button>
+          <button class="btn-sm btn-delete" onclick="deletePersonDoc('${id}','${doc.key}','${type}')">🗑</button>
+        </div>
+      `:`<button class="btn-sm btn-upload" style="margin-top:6px" onclick="triggerPersonUpload('${doc.key}','${doc.accept}')">⬆ Upload</button>`}
+    </div>`;
+  }).join('')}</div>`;
+  document.getElementById('personModal').classList.add('open');
+}
+
+function closePersonModal(){document.getElementById('personModal').classList.remove('open');currentPersonId=null;currentPersonType=null;}
+
+function triggerPersonUpload(docKey,accept){
+  const input=document.getElementById('hiddenFileInput');
+  input.accept=accept;input.value='';
+  input.onchange=()=>handlePersonDocUpload(docKey);
+  input.click();
+}
+
+async function handlePersonDocUpload(docKey){
+  const file=document.getElementById('hiddenFileInput').files[0];
+  if(!file)return;
+  showLoading('Uploading...');
+  try{
+    const fileData=await fileToBase64(file);
+    const isOp=currentPersonType==='operator';
+    const payload={
+      action:isOp?'uploadOperatorDocument':'uploadLaborDocument',
+      companyId:currentUser.companyId,
+      driveFolderID:currentUser.driveFolderID,
+      docType:docKey,fileName:file.name,fileData,
+      mimeType:file.type||'application/octet-stream',
+      personType:currentPersonType
+    };
+    if(isOp)payload.operatorId=currentPersonId;
+    else payload.personId=currentPersonId;
+    const savedId=currentPersonId;const savedType=currentPersonType;
+    const res=await apiCall(payload);
+    if(res.success){closePersonModal();await loadSupplierPortal();
+      const items=savedType==='operator'?(supplierData.operators||[]):(supplierData.labors||[]);
+      const p=items.find(x=>(savedType==='operator'?x.operatorId:x.laborId)===savedId);
+      if(p)openPersonModal(savedId,savedType==='operator'?p.operatorName:p.laborName,p.employeeNumber,savedType);
+    }else alert('Upload failed: '+res.error);
+  }catch(e){alert('Error: '+e.message);}
+  hideLoading();
+}
+
+async function deletePersonDoc(personId,docKey,personType){
+  if(!confirm('Remove this document?'))return;
+  showLoading('Removing...');
+  const isOp=personType==='operator';
+  const payload=isOp?{action:'deleteOperatorDocument',operatorId:personId,docType:docKey,personType}:{action:'deleteLaborDocument',personId,docType:docKey,personType};
+  await apiCall(payload);
+  closePersonModal();await loadSupplierPortal();hideLoading();
+}
+
+// ============================================================
+// ADMIN DASHBOARD
+// ============================================================
+async function loadAdminDashboard(){
+  showLoading('Loading suppliers...');
+  try{const res=await apiCall({action:'getAllSuppliers'});if(res.success)renderAdminDashboard(res.suppliers);}
+  catch(e){alert('Error loading admin data.');}
+  hideLoading();
+}
+
+function renderAdminDashboard(suppliers){
+  const total=suppliers.length;
+  const complete=suppliers.filter(s=>s.status==='complete').length;
+  const totalLabors=suppliers.reduce((a,s)=>a+s.laborCount,0);
+  const totalOps=suppliers.reduce((a,s)=>a+s.operatorCount,0);
+  document.getElementById('adminStatsRow').innerHTML=`
+    <div class="stat-box"><div class="stat-num">${total}</div><div class="stat-label">Total Suppliers</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--success)">${complete}</div><div class="stat-label">Complete</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--warning)">${total-complete}</div><div class="stat-label">Incomplete</div></div>
+    <div class="stat-box"><div class="stat-num">${totalLabors}</div><div class="stat-label">Employees</div></div>
+    <div class="stat-box"><div class="stat-num">${totalOps}</div><div class="stat-label">Operators</div></div>`;
+  document.getElementById('supplierListWrap').innerHTML=!suppliers.length
+    ?'<div style="text-align:center;padding:40px;color:var(--text-muted)">No suppliers registered yet.</div>'
+    :suppliers.map(s=>`
+      <div class="supplier-card" onclick="viewSupplierDetail('${s.companyId}')">
+        <div>
+          <div class="supplier-name">${s.companyName}</div>
+          <div class="supplier-meta">Registered: ${formatDate(s.registeredDate)} · ${s.laborCount} employees · ${s.operatorCount} operators · ${s.uploadedDocCount} docs</div>
+          ${s.missingDocs.length?`<div class="missing-list">Missing: ${s.missingDocs.map(d=>COMPANY_DOCS.find(x=>x.key===d)?.label||d).join(', ')}</div>`:''}
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="status-badge ${s.status}">${s.status==='complete'?'✓ Complete':'⚠ Incomplete'}</span>
+          <span style="color:var(--text-muted);font-size:18px">›</span>
+        </div>
+      </div>`).join('');
+}
+
+function showAdminList(){document.getElementById('adminListView').style.display='';document.getElementById('adminDetailView').style.display='none';}
+
+async function viewSupplierDetail(companyId){
+  currentAdminCompanyId=companyId;
+  showLoading('Loading details...');
+  try{const res=await apiCall({action:'getSupplierDetails',companyId});if(res.success){document.getElementById('adminListView').style.display='none';document.getElementById('adminDetailView').style.display='';renderSupplierDetail(res,companyId);}}
+  catch(e){alert('Error loading details.');}
+  hideLoading();
+}
+
+function renderSupplierDetail(data,companyId){
+  const content=document.getElementById('adminDetailContent');
+
+  // Company docs with approval buttons
+  const companyDocsHtml=COMPANY_DOCS.map(doc=>{
+    const d=data.documents[doc.key];
+    const expired=d&&doc.hasExpiry&&isExpired(d.expiryDate);
+    return `<div style="border-bottom:1px solid var(--border);padding:12px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <div>
+          <div style="font-size:13px;font-weight:600">${doc.label}${doc.mandatory?'<span class="required-star">*</span>':''}</div>
+          ${d?`<div style="font-size:11px;color:var(--text-muted)">${d.fileName} · ${formatDate(d.uploadDate)}</div>`:''}
+          ${d&&doc.hasExpiry?`<div style="font-size:11px;color:${expired?'var(--danger)':'var(--text-muted)'}">Expiry: ${formatDate(d.expiryDate)}${expired?' ⚠ EXPIRED':''}</div>`:''}
+          ${d&&d.approvalComment?`<div class="approval-note ${d.approvalStatus}" style="display:inline-block;margin-top:4px">${d.approvalComment}</div>`:''}
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          ${d?`
+            ${approvalBadge(d.approvalStatus)}
+            <a href="${d.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+            <button class="btn-sm btn-approve" onclick="openApprovalModal('${d.docId}','company','${doc.label}','approved')">✓ Approve</button>
+            <button class="btn-sm btn-reject" onclick="openApprovalModal('${d.docId}','company','${doc.label}','rejected')">✗ Reject</button>
+            <button class="btn-sm btn-delete" onclick="adminDeleteDoc('${companyId}','${doc.key}')">🗑 Delete</button>
+          `:'<span class="doc-badge pending">Missing</span>'}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Labor table for admin
+  const laborHtml=renderAdminPersonTable(data.labors||[],companyId,'labor');
+  const operatorHtml=renderAdminPersonTable(data.operators||[],companyId,'operator');
+
+  // Comments
+  const commentsHtml=(data.comments||[]).map(c=>`
+    <div class="comment-bubble">
+      <div>
+        <div class="comment-text">${c.comment}</div>
+        <div class="comment-meta">${formatDate(c.date)} <span class="comment-status ${c.status}">${c.status}</span></div>
+      </div>
+      <button class="btn-sm btn-delete" onclick="adminDeleteComment('${c.commentId}','${companyId}')" style="flex-shrink:0">🗑</button>
+    </div>`).join('');
+
+  content.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div><div class="page-heading">${data.companyName}</div><div class="page-sub">Supplier submission details</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="${data.driveLink}" target="_blank" class="drive-link-btn">📁 Open Drive Folder</a>
+        <button class="btn-sm btn-upload" onclick="downloadAllDocs('${companyId}','${data.companyName}')" style="padding:7px 14px;font-size:13px">⬇ Download ZIP</button>
+        <button class="btn-sm btn-delete" onclick="adminDeleteSupplier('${companyId}','${data.companyName}')" style="padding:7px 14px;font-size:13px">🗑 Delete All Data</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">🏢 Company Documents</div></div>
+      <div class="card-body">${companyDocsHtml}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">👷 Employees (${(data.labors||[]).length})</div></div>
+      <div class="card-body">${laborHtml}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">🏗 Operators (${(data.operators||[]).length})</div></div>
+      <div class="card-body">${operatorHtml}</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">💬 Comments & Review</div></div>
+      <div class="card-body">
+        ${commentsHtml||'<div style="color:var(--text-muted);font-size:14px;margin-bottom:14px">No comments yet.</div>'}
+        <hr class="divider">
+        <div class="form-group"><label>Add Comment</label><textarea id="newComment" rows="3" placeholder="Enter feedback for the supplier..."></textarea></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <select id="commentStatus" style="width:auto;flex:none;padding:8px 12px">
+            <option value="pending">Pending</option>
+            <option value="revision">Needs Revision</option>
+            <option value="approved">Approved</option>
+          </select>
+          <button class="btn-sm btn-upload" onclick="submitComment('${companyId}')" style="padding:9px 18px;font-size:13px">Send Comment</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAdminPersonTable(items,companyId,type){
+  const isOp=type==='operator';
+  const docs=isOp?OPERATOR_DOCS:LABOR_DOCS;
+  if(!items.length)return `<div style="color:var(--text-muted);font-size:14px">No ${isOp?'operators':'employees'} added.</div>`;
+  return `<div class="labor-table-wrap"><table>
+    <thead><tr><th>Name</th><th>Emp. ID</th><th>Doc Status</th><th>Actions</th></tr></thead>
+    <tbody>${items.map(p=>{
+      const id=isOp?p.operatorId:p.laborId;
+      const name=isOp?p.operatorName:p.laborName;
+      return `<tr>
+        <td><strong>${name}</strong></td>
+        <td>${p.employeeNumber}</td>
+        <td><div style="display:flex;gap:4px;flex-wrap:wrap">${docs.map(d=>{
+          const doc=p.documents[d.key];
+          const st=doc?(doc.approvalStatus||'pending'):'miss';
+          return `<span class="status-dot ${st}" title="${d.label}: ${doc?st:'Missing'}"></span>`;
+        }).join('')}</div></td>
+        <td>
+          <button class="btn-sm btn-view" onclick="openAdminPersonModal('${id}','${name}','${p.employeeNumber}','${type}',${JSON.stringify(p.documents).replace(/"/g,'&quot;')})">📂 Review Docs</button>
+          <button class="btn-sm btn-delete" onclick="adminDeletePerson('${id}','${name}','${type}','${companyId}')" style="margin-left:4px">🗑</button>
+        </td>
+      </tr>`;
+    }).join('')}</tbody></table></div>`;
+}
+
+function openAdminPersonModal(id,name,empNum,type,docsJson){
+  const docs=type==='operator'?OPERATOR_DOCS:LABOR_DOCS;
+  const personDocs=typeof docsJson==='string'?JSON.parse(docsJson.replace(/&quot;/g,'"')):docsJson;
+  document.getElementById('personModalTitle').textContent=name+' · '+empNum+' ('+(type==='operator'?'Operator':'Labor')+') — Admin Review';
+  const body=document.getElementById('personModalBody');
+  body.innerHTML=`<div class="person-doc-grid">${docs.map(doc=>{
+    const uploaded=personDocs[doc.key];
+    const approval=uploaded?uploaded.approvalStatus:'';
+    return `<div class="person-doc-item ${uploaded?(approval==='rejected'?'rejected':'uploaded'):''}">
+      <div class="person-doc-label">${doc.label}</div>
+      ${uploaded?`
+        ${approvalBadge(approval)}
+        <div class="file-name">📎 ${uploaded.fileName}</div>
+        ${uploaded.approvalComment?`<div class="approval-note ${approval}">${uploaded.approvalComment}</div>`:''}
+        <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap">
+          <a href="${uploaded.driveLink}" target="_blank" class="btn-sm btn-view">👁 View</a>
+          <button class="btn-sm btn-approve" onclick="openApprovalModal('${uploaded.docId}','${type}','${doc.label}','approved')">✓</button>
+          <button class="btn-sm btn-reject" onclick="openApprovalModal('${uploaded.docId}','${type}','${doc.label}','rejected')">✗</button>
+        </div>
+      `:'<span style="font-size:12px;color:var(--text-muted)">Not uploaded</span>'}
+    </div>`;
+  }).join('')}</div>`;
+  document.getElementById('personModal').classList.add('open');
+}
+
+function closePersonModal(){document.getElementById('personModal').classList.remove('open');}
+
+// ============================================================
+// APPROVAL MODAL
+// ============================================================
+let pendingApproval=null;
+function openApprovalModal(docId,personType,docLabel,suggestedStatus){
+  pendingApproval={docId,personType};
+  document.getElementById('approvalModalBody').innerHTML=`
+    <div style="margin-bottom:14px">
+      <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Document</div>
+      <div style="font-size:15px;font-weight:600">${docLabel}</div>
+    </div>
+    <div class="form-group">
+      <label>Approval Status</label>
+      <select id="approvalStatusSelect">
+        <option value="approved" ${suggestedStatus==='approved'?'selected':''}>✓ Approved</option>
+        <option value="rejected" ${suggestedStatus==='rejected'?'selected':''}>✗ Rejected</option>
+        <option value="pending">⏳ Under Review</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Comment (optional — shown to supplier)</label>
+      <textarea id="approvalCommentInput" rows="3" placeholder="e.g. Document is clear and valid. / Please re-upload a clearer copy."></textarea>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-sm btn-approve" onclick="submitApproval()" style="padding:9px 18px;font-size:13px;flex:1">Save Decision</button>
+      <button class="btn-sm btn-delete" onclick="closeApprovalModal()" style="padding:9px 18px;font-size:13px">Cancel</button>
+    </div>`;
+  document.getElementById('approvalModal').classList.add('open');
+}
+
+function closeApprovalModal(){document.getElementById('approvalModal').classList.remove('open');pendingApproval=null;}
+
+async function submitApproval(){
+  if(!pendingApproval)return;
+  const docId=pendingApproval.docId;
+  const personType=pendingApproval.personType;
+  const approvalStatus=document.getElementById('approvalStatusSelect').value;
+  const approvalComment=document.getElementById('approvalCommentInput').value.trim();
+  closeApprovalModal();
+  showLoading('Saving approval...');
+  await apiCall({action:'setDocumentApproval',docId,personType,approvalStatus,approvalComment});
+  await viewSupplierDetail(currentAdminCompanyId);
+  hideLoading();
+}
+
+// ============================================================
+// ADMIN ACTIONS
+// ============================================================
+async function submitComment(companyId){
+  const comment=document.getElementById('newComment').value.trim();
+  const status=document.getElementById('commentStatus').value;
+  if(!comment)return alert('Please enter a comment.');
+  showLoading('Sending...');
+  await apiCall({action:'addAdminComment',companyId,comment,status});
+  await viewSupplierDetail(companyId);hideLoading();
+}
+
+async function adminDeleteComment(commentId,companyId){
+  if(!confirm('Delete this comment?'))return;
+  showLoading('Deleting comment...');
+  await apiCall({action:'deleteAdminComment',commentId});
+  await viewSupplierDetail(companyId);hideLoading();
+}
+
+async function adminDeleteDoc(companyId,docType){
+  if(!confirm('Delete this document from the system? This will also remove it from Google Drive.'))return;
+  showLoading('Deleting document...');
+  await apiCall({action:'deleteDocument',companyId,docType});
+  await viewSupplierDetail(companyId);hideLoading();
+}
+
+async function adminDeletePerson(id,name,type,companyId){
+  if(!confirm('Delete '+name+' and all their documents? This cannot be undone.'))return;
+  showLoading('Deleting...');
+  const action=type==='operator'?'deleteOperator':'deleteLabor';
+  const payload=type==='operator'?{action,operatorId:id}:{action,laborId:id};
+  await apiCall(payload);
+  await viewSupplierDetail(companyId);hideLoading();
+}
+
+async function adminDeleteSupplier(companyId,companyName){
+  const confirmed=prompt(`WARNING: This will permanently delete ALL data for ${companyName} including all documents from Google Drive.\n\nType DELETE to confirm:`);
+  if(confirmed!=='DELETE')return alert('Cancelled. You must type DELETE to confirm.');
+  showLoading('Deleting all supplier data...');
+  await apiCall({action:'deleteSupplierData',companyId});
+  showAdminList();await loadAdminDashboard();hideLoading();
+}
+
+// ============================================================
+// ZIP DOWNLOAD
+// ============================================================
+async function downloadAllDocs(companyId, companyName) {
+  if (!confirm('This will package all documents for ' + companyName + ' into a ZIP file.\n\nThis may take 20–60 seconds depending on number of files.\n\nContinue?')) return;
+  showLoading('Packaging documents into ZIP... please wait');
+  try {
+    const res = await apiCall({ action: 'buildSupplierZip', companyId });
+    if (res.success) {
+      const byteChars = atob(res.zipBase64);
+      const byteNums = new Array(byteChars.length);
+      for (let i = 0; i < byteChars.length; i++) byteNums[i] = byteChars.charCodeAt(i);
+      const blob = new Blob([new Uint8Array(byteNums)], { type: 'application/zip' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = res.fileName;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(url);
+      alert('Downloaded ' + res.fileCount + ' documents for ' + res.companyName);
+    } else {
+      alert('ZIP failed: ' + res.error);
+    }
+  } catch(e) { alert('Error: ' + e.message); }
+  hideLoading();
+}
+
+// Close modals on overlay click
+document.getElementById('personModal').addEventListener('click',function(e){if(e.target===this)closePersonModal()});
+document.getElementById('approvalModal').addEventListener('click',function(e){if(e.target===this)closeApprovalModal()});
+</script>
+</body>
+</html>
